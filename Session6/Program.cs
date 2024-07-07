@@ -1,4 +1,8 @@
-﻿namespace Session6
+﻿
+using Common;
+
+namespace Session6
+
 {
     internal class Program
     {
@@ -49,6 +53,15 @@
             }
 
             Console.WriteLine("After Try Catch");
+
+
+
+            #region Acces Modifiers
+
+            TypeA obj = new TypeA(); //valid
+           //TypeB obj2 = new Common.TypeB(); // Invalid [Internal]
+                                     // 'TypeB' is inaccessible due to its protection level
+            #endregion
 
         }
     }
