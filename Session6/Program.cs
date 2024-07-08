@@ -1,6 +1,7 @@
 ﻿
 
 using System.Reflection;
+using System.Security;
 
 namespace Session6
 
@@ -17,17 +18,30 @@ namespace Session6
 
     class Employee
     {
-        string Name; // Varchar
-        int Age; // int
-        double Salary; // double
-        //Gender Gender; // int 0-1
-        Roles Role; // Admin – Editor – Viewer
+       public string Name; // Varchar
+       public int Age; // int
+       public double Salary; // double
+       public gender Gender; // int 0-1
+       //public //Roles Role; // Admin – Editor – Viewer
+       public premission permissions;
     }
 
     enum branches :byte // 8bites => 0:255
     {
         Dokki , NaseCity , Maddi , ALex , SmartVillage , cairo 
     }
+
+    enum gender
+    {
+        Male=1 , Female=2
+    }
+
+    [Flags]
+    public enum  premission
+    {
+        Delete=1 , Execute=2,Read=4,Write=8
+    }
+
 
 
 
@@ -93,40 +107,116 @@ namespace Session6
             #region Enum 
             #region Ex01
 
-            Grades x = Grades.A;
-            Grades y = (Grades)2;
-            Grades z = (Grades)10;
+            //Grades x = Grades.A;
+            //Grades y = (Grades)2;
+            //Grades z = (Grades)10;
 
-            Console.WriteLine(y); // Explicit casting 
-            Console.WriteLine(z); // Explicit casting // there is no lable match 10
+            //Console.WriteLine(y); // Explicit casting 
+            //Console.WriteLine(z); // Explicit casting // there is no lable match 10
 
 
 
-            if (x == Grades.A)
-            {
-                Console.WriteLine(":)");
-            }
-            else
-            {
-                Console.WriteLine(":(");
-            }
+            //if (x == Grades.A)
+            //{
+            //    Console.WriteLine(":)");
+            //}
+            //else
+            //{
+            //    Console.WriteLine(":(");
+            //}
 
             #region Ex 02
-            Console.WriteLine("Please Enter Your Grade");
-            //Grades k = (Grades) Enum.Parse(typeof(Grades) , Console.ReadLine()); //worst way beacuse there is alot of boxing and unboxing and it is not safe way to use parse so we will use try parse.
-           bool result = Enum.TryParse(typeof(Grades), Console.ReadLine(), out object k); //Tryparse issues :1- there is alot of boxing and unboxing  2-when it is false it will return value which is null
-            Console.WriteLine($"Your result is {result}");
-            Console.WriteLine(k);
+            // Console.WriteLine("Please Enter Your Grade");
+            // //Grades k = (Grades) Enum.Parse(typeof(Grades) , Console.ReadLine()); //worst way beacuse there is alot of boxing and unboxing and it is not safe way to use parse so we will use try parse.
+            //bool result = Enum.TryParse(typeof(Grades), Console.ReadLine(), out object k); //Tryparse issues :1- there is alot of boxing and unboxing  2-when it is false it will return value which is null
+            // Console.WriteLine($"Your result is {result}");
+            // Console.WriteLine(k);
+
+
+            #endregion
+
+            #region E03
+
+            // string Gender = "male";
+
+            // // gender G =(gender) Gender; 
+            // //Enum.TryParse(typeof(gender), Gender, out object result2);
+            //bool flag = Enum.TryParse<gender>(Gender, out gender result2); // this is a best way // C# 1.0
+            // Console.WriteLine(flag); // false
+
+            // Console.WriteLine(result2); //0 for that we prefare to dont use 0 in enum lable beacuse it is the defult value
+            // // so we will use genaric try pasrse like below :
+            // bool flag2 = Enum.TryParse<gender>(Gender, true, out gender result3); //ingore Casw => ingore casesenstivate //  C# 2.0
+            // Console.WriteLine(flag2); // True
+            // Console.WriteLine(result3);
+
+            // // Defalut value for enum = 0 
+            // gender v = new gender(); // here new is used to give the v the defalut value 
+            // Console.WriteLine(v);
 
 
             #endregion
 
 
+            #region Ex04
+
+            Employee employee = new Employee();
+            employee.Name = "Bayan";
+            employee.Gender = gender.Female;
+            employee.permissions=(premission)3; //Delete, Execute
+
+            Console.WriteLine(employee.permissions);
+            //if you want to add a new permission (Read) => Use XOR operation
+            employee.permissions = employee.permissions ^ premission.Read; //Delete, Execute, Read
+            Console.WriteLine(employee.permissions);
+
+
+            //if you want to deny permission (Read)  => Use XOR operation
+            employee.permissions = employee.permissions ^ premission.Read;
+            Console.WriteLine(employee.permissions); //Delete, Execute //we need to use ^ carfully
+
+
+
+            // If you Want To Check If Delete is Existed Or Not
+            // Do And Operation
+            // &
+            // employee.Permissions & Permission.Delete;
+            // If Delete is Existed => return Delete
+            // If Delete is not Existed => Return Random Value
+
+            //if ((employee.permissions & premission.Delete) == premission.Delete)
+            //{
+            //    Console.WriteLine("Delete Is Existed");
+            //}
+            //else {
+            //    employee.permissions = employee.permissions ^ premission.Read;
+            //}
 
 
 
 
 
+
+
+
+            #endregion
+
+            #region Struct
+
+            Point p1;
+
+            //p1.x = 10;
+            p1 = new Point(4,4);
+
+          
+            Console.WriteLine(p1.x);
+
+            Console.WriteLine (p1);
+            Console.WriteLine(p1.ToString());
+
+
+
+            #endregion
 
             #endregion
 
